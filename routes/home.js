@@ -9,7 +9,9 @@ router.get('/essay', function(req, res) {
   Essay.find({}).exec(function(err, essays) {
     if(err) throw err;
     essays.forEach(function(essay) {
+      // console.log(essay.content);
       essay.content = marked(essay.content);
+      console.log(essay.content);
       if(essay.content.length > 250) {
       essay.content = essay.content.slice(0,140) 
       + `<br/><a href="http://localhost:3000/home/essay/${essay._id}">......查看全文</a>`;

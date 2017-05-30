@@ -55,15 +55,15 @@ router.post('/add', function(req, res) {
   var content = req.body.content;
   var essay = new Essay();
   essay.title = title;
-  essay.tags = tags.split(' ');
   essay.content = content;
   essay.create_time = new Date();
   essay.update_time = new Date();
   essay.save(function(err) {
     if(err) throw err;
     console.log('meow');
+    res.redirect('/api'); 
   });
-  res.redirect('../home/essay'); 
+  
 });
 
 router.get('/del/:id', function(req, res) {
