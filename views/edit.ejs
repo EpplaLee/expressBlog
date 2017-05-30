@@ -1,0 +1,21 @@
+<!DOCTYPE>
+<head>
+    <title>Add</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/add.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/semantic.min.css">
+</head>
+<body>
+    <div class="ui segment">
+        <form class="ui form" method="post" enctype="mutipart/form/data" action="/api/edit/<%= id %>">
+           <div class="field">
+               <label>标题</label>
+               <input type="text" name="title" <%= title %>>
+                <label>标签</label>
+               <input type="text" name="tags">
+               <label>正文</label>
+               <textarea name="content" rows="15" ><%= content %></textarea>
+            </div>
+         <input type="submit" class="ui secondary button" value="Publish">
+    </form>
+    </div>
+</body>

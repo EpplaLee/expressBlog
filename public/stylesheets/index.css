@@ -1,0 +1,29 @@
+body {
+    background-image: url(../images/index.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: auto 100%;
+}
+#text-area {
+    position: relative;
+    top: 50%;
+    transform: translateX(15%) translateY(-50%);
+    text-align: center;
+    width: 350px;
+    height: 150px;
+    color: white;
+    background-color: rgba(11,11,11, 0.2);
+    font-size: 20px;
+    border-radius: 5px;
+}
+#text-area div {
+    padding-top: 15px;
+}
+
+#text-area li {
+    list-style: none;
+    float: left;
+    margin-top: 15px;
+    margin-left: 10px;
+}

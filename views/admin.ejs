@@ -1,0 +1,27 @@
+<!DOCTYPE>
+<head>
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/admin.css">
+</head>
+<body>
+    <div class="ui segment">
+      <div class="ui secondary menu" id="menu">
+          <a href="/api/add" class="item">Add Essay</a>
+          <a href="../home/essay" class="item">Homepage</a>
+      </div>
+      <div class="ui divided list">
+          <h2>文章列表</h2>
+            <% lists.forEach(function(list) { %>
+               <div class="item">
+               <h3 class="header"><%= list.title %></h4>
+               <div class="ui primary button in"><%- list.editURL %></div>
+               <div class="ui secondary button in"><%- list.delURL %></div>
+                   <div class="description">
+                        <%= list.content %>
+                   </div>
+               </div>
+            <% }) %>
+        </div>
+    </div>
+</body>

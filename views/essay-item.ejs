@@ -1,0 +1,7 @@
+<% essays.forEach(function(essay) { %>
+    <div id="essay-item" class="ui piled segment">
+        <h2><%- essay.address %><%= essay.title %></a></h2>
+        <p><%= essay.create_time %></p>
+        <pre><%- essay.content %></pre>
+    </div>
+<% }) %>

@@ -1,0 +1,29 @@
+.segment {
+    width: 80%;
+    margin: 20px auto !important;
+    
+}
+.segment > a {
+    font-size: 80px;
+}
+#menu {
+    float: right;
+}
+#menu > .item {
+    width: 100px;
+    height: 40px;
+    color: white;
+    background-color: rgba(11,11,11, 0.3);
+}
+
+.item > .header {
+    display: inline !important;
+}
+.in {
+    width: 70px;
+    height: 32px;
+}
+.in > a{
+    color: white;
+    font-family: "Microsoft YaHei";
+}
