@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
     lists.forEach(function(list) {
       list.content = list.content.slice(0,40);
       list.editURL = `<a href='/api/edit/${list._id}'>编辑</a>`;
-      list.delURL = `<a href='/api/del/${list._id}'>删除</a>`;
+      list.delURL = `<div class="ui secondary button in del" href='/api/del/${list._id}'>删除</div>`;
     });
     res.render('admin', {
       lists: lists
@@ -70,7 +70,9 @@ router.get('/del/:id', function(req, res) {
   let id = req.params.id;
   Essay.remove({"_id": id}, function(err) {
     if(err) throw err;
-    res.redirect('/api');
+    res.json({
+      success: 1
+    })
   })
 })
 module.exports = router;
