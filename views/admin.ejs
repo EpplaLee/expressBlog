@@ -5,17 +5,29 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/admin.css">
 </head>
 <body>
+    <div class="ui segment" id="essay-form">
+        <form class="ui form">
+           <div class="field">
+               <label>标题</label>
+               <input type="text" name="title" id="title" value=''>
+               <label>正文</label>
+               <textarea name="content" rows="15" id="content"></textarea>
+            </div>
+         <div class="ui primary button publish">发表</div>
+         <div class="ui secondary button close">关闭</div>
+    </form>
+    </div>
     <div class="ui segment">
       <div class="ui secondary menu" id="menu">
-          <a href="/api/add" class="item">Add Essay</a>
+          <div class="ui button item">Add Essay</div>
           <a href="../home/essay" class="item">Homepage</a>
       </div>
       <div class="ui divided list">
           <h2>文章列表</h2>
             <% lists.forEach(function(list) { %>
-               <div class="item">
+               <div class="essay-item">
                <h3 class="header"><%= list.title %></h4>
-               <div class="ui primary button in"><%- list.editURL %></div>
+               <%- list.editURL %>
                <%- list.delURL %>
                    <div class="description">
                         <%= list.content %>
@@ -27,22 +39,21 @@
 </body>
 <script>
 var list = document.getElementsByClassName("list")
-
-list[0].onclick =  function del(event) {
-    var el = event.target
-    if(event.target.className === "ui secondary button in del") {
+list[0].onclick =  function CRUD(event) {
+    let el = event.target
+    if(el.className === "ui secondary button in del") {
         if(window.XMLHttpRequest) {
             xhr = new XMLHttpRequest()
         } else {
             xhr = new ActiveXObject('Microsoft.XMLHTTP')
         }
-        var url = event.target.attributes.href.nodeValue
+        let url = el.attributes.href.nodeValue
         xhr.open('GET', url, true)
         xhr.send()
         xhr.onreadystatechange = function() {
             if(xhr.readyState === 4) {
                 if(xhr.status >= 200 && status < 300) {
-                    var response = JSON.parse(xhr.responseText)
+                    let response = JSON.parse(xhr.responseText)
                     if(response.success === 1){
                         el = el.parentNode
                         el.parentNode.removeChild(el)
@@ -52,6 +63,104 @@ list[0].onclick =  function del(event) {
                 }
             }
         }
+    } else if(el.className === "ui primary button in edit"){
+        if(window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest()
+        } else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP')
+        }
+        let url = '/api/article/' + el.attributes.href.nodeValue
+        xhr.open('GET', url, true)
+        xhr.send()
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState === 4) {
+                if(xhr.status >= 200 && status < 300) {
+                    let response = JSON.parse(xhr.responseText)
+                    console.log(response.essay)
+                    let title = response.essay.title
+                    let content = response.essay.content
+                    document.querySelector('#title').value = title
+                    document.querySelector('#content').value = content
+                    var essayFrom = document.getElementById('essay-form')
+                    essayFrom.style.display = 'block'
+                    essayFrom.onclick = (event) => {
+                        if(event.target.className === "ui secondary button close") {
+                            essayFrom.style.display = 'none'
+                        } else if(event.target.className === "ui primary button publish") {
+                            let title = document.querySelector('#title').value
+                            let content = document.querySelector('#content').value
+                            let data = `title=${title}&content=${content}`
+                            console.log(data)
+                            xhr.open('POST', '/api/edit/' + el.attributes.href.nodeValue, true)
+                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+                            xhr.send(data)
+                            xhr.onreadystatechange = () => {
+                                if(xhr.readyState === 4) {
+                                    if(xhr.status >= 200 && status < 300) {
+                                        let response = JSON.parse(xhr.responseText)
+                                        if(response.success === 1) {
+                                            el.parentNode.querySelector('.header').innerHTML = title
+                                            el.parentNode.querySelector('.description').innerHTML = content.slice(0,40)
+                                            essayFrom.style.display = 'none'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    alert("读取文章失败")
+                }
+            }
+        } 
+         
     }
 }
+var menu = document.getElementById('menu')
+menu.onclick = (event) => {
+    if(event.target.className === "ui button item") {
+        var essayFrom = document.getElementById('essay-form')
+        document.querySelector('#title').value = ''
+        document.querySelector('#content').value = ''
+        essayFrom.style.display = 'block'
+        essayFrom.onclick = (event) => {
+            if(event.target.className === "ui secondary button close") {
+                essayFrom.style.display = 'none'
+                    } else if(event.target.className === "ui primary button publish") {
+                        let title = document.querySelector('#title').value
+                        let content = document.querySelector('#content').value
+                        let data = `title=${title}&content=${content}`
+                        console.log(data)
+                        if(window.XMLHttpRequest) {
+                            xhr = new XMLHttpRequest()
+                        } else {
+                            xhr = new ActiveXObject('Microsoft.XMLHTTP')
+                        }
+                        xhr.open('POST', '/api/add', true)
+                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+                        xhr.send(data)
+                        xhr.onreadystatechange = () => {
+                        if(xhr.readyState === 4) {
+                                    if(xhr.status >= 200 && status < 300) {
+                                        let response = JSON.parse(xhr.responseText)
+                                        if(response) {
+                                            let $item = document.getElementsByClassName('essay-item')[0]
+                                            $item.insertAdjacentHTML('beforebegin', $item.outerHTML)
+                                            $item = document.getElementsByClassName('essay-item')[0]
+                                            $item.children[0].innerHTML = title
+                                            $item.children[1].attributes.href.nodeValue = response.id
+                                            $item.children[2].attributes.href.nodeValue = '/api/del/' + response.id
+                                            $item.children[3].innerHTML = content
+                                            essayFrom.style.display = 'none'
+                                        } else {
+                                            alert('发表失败')
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+    }
+}
+
 </script>

@@ -16,7 +16,7 @@
     background-color: rgba(11,11,11, 0.3);
 }
 
-.item > .header {
+.essay-item > .header {
     display: inline !important;
 }
 .in {
@@ -26,4 +26,15 @@
 .in > a{
     color: white;
     font-family: "Microsoft YaHei";
+}
+
+#essay-form {
+    background-color: rgba(111,158,174,0.9);
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    transform: translate(-50%, -70%)
+
 }
