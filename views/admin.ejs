@@ -38,16 +38,16 @@
     </div>
 </body>
 <script>
-var list = document.getElementsByClassName("list")
-list[0].onclick =  function CRUD(event) {
-    let el = event.target
-    if(el.className === "ui secondary button in del") {
+var $list = document.getElementsByClassName("list")
+$list[0].onclick =  function CRUD(event) {
+    let $el = event.target
+    if($el.className === "ui secondary button in del") {
         if(window.XMLHttpRequest) {
             xhr = new XMLHttpRequest()
         } else {
             xhr = new ActiveXObject('Microsoft.XMLHTTP')
         }
-        let url = el.attributes.href.nodeValue
+        let url = $el.attributes.href.nodeValue
         xhr.open('GET', url, true)
         xhr.send()
         xhr.onreadystatechange = function() {
@@ -55,21 +55,21 @@ list[0].onclick =  function CRUD(event) {
                 if(xhr.status >= 200 && status < 300) {
                     let response = JSON.parse(xhr.responseText)
                     if(response.success === 1){
-                        el = el.parentNode
-                        el.parentNode.removeChild(el)
+                        $el = $el.parentNode
+                        $el.parentNode.removeChild($el)
                     } else {
                         alert("删除失败")
                     }
                 }
             }
         }
-    } else if(el.className === "ui primary button in edit"){
+    } else if($el.className === "ui primary button in edit"){
         if(window.XMLHttpRequest) {
             xhr = new XMLHttpRequest()
         } else {
             xhr = new ActiveXObject('Microsoft.XMLHTTP')
         }
-        let url = '/api/article/' + el.attributes.href.nodeValue
+        let url = '/api/article/' + $el.attributes.href.nodeValue
         xhr.open('GET', url, true)
         xhr.send()
         xhr.onreadystatechange = () => {
@@ -81,17 +81,17 @@ list[0].onclick =  function CRUD(event) {
                     let content = response.essay.content
                     document.querySelector('#title').value = title
                     document.querySelector('#content').value = content
-                    var essayFrom = document.getElementById('essay-form')
-                    essayFrom.style.display = 'block'
-                    essayFrom.onclick = (event) => {
+                    var $essayFrom = document.getElementById('essay-form')
+                    $essayFrom.style.display = 'block'
+                    $essayFrom.onclick = (event) => {
                         if(event.target.className === "ui secondary button close") {
-                            essayFrom.style.display = 'none'
+                            $essayFrom.style.display = 'none'
                         } else if(event.target.className === "ui primary button publish") {
                             let title = document.querySelector('#title').value
                             let content = document.querySelector('#content').value
                             let data = `title=${title}&content=${content}`
                             console.log(data)
-                            xhr.open('POST', '/api/edit/' + el.attributes.href.nodeValue, true)
+                            xhr.open('POST', '/api/edit/' + $el.attributes.href.nodeValue, true)
                             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
                             xhr.send(data)
                             xhr.onreadystatechange = () => {
@@ -99,9 +99,9 @@ list[0].onclick =  function CRUD(event) {
                                     if(xhr.status >= 200 && status < 300) {
                                         let response = JSON.parse(xhr.responseText)
                                         if(response.success === 1) {
-                                            el.parentNode.querySelector('.header').innerHTML = title
-                                            el.parentNode.querySelector('.description').innerHTML = content.slice(0,40)
-                                            essayFrom.style.display = 'none'
+                                            $el.parentNode.querySelector('.header').innerHTML = title
+                                            $el.parentNode.querySelector('.description').innerHTML = content.slice(0,40)
+                                            $essayFrom.style.display = 'none'
                                         }
                                     }
                                 }
@@ -116,16 +116,16 @@ list[0].onclick =  function CRUD(event) {
          
     }
 }
-var menu = document.getElementById('menu')
-menu.onclick = (event) => {
+var $menu = document.getElementById('menu')
+$menu.onclick = (event) => {
     if(event.target.className === "ui button item") {
-        var essayFrom = document.getElementById('essay-form')
+        var $essayFrom = document.getElementById('essay-form')
         document.querySelector('#title').value = ''
         document.querySelector('#content').value = ''
-        essayFrom.style.display = 'block'
-        essayFrom.onclick = (event) => {
+        $essayFrom.style.display = 'block'
+        $essayFrom.onclick = (event) => {
             if(event.target.className === "ui secondary button close") {
-                essayFrom.style.display = 'none'
+                $essayFrom.style.display = 'none'
                     } else if(event.target.className === "ui primary button publish") {
                         let title = document.querySelector('#title').value
                         let content = document.querySelector('#content').value
