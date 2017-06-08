@@ -31,6 +31,7 @@ router.get('/essay/:id', function(req, res) {
   Essay.find({"_id" : id}).exec(function(err, essays) {
     if(err) throw err;
     essays.forEach(function(essay) {
+      console.log(essay.content)
       essay.content = marked(essay.content);
     });
   res.render('homepage', {
